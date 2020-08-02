@@ -7,6 +7,8 @@ public class Cat
     private double food;
     public static int count;
 
+    private Color color;
+
     private static final int EYES = 2;
     private static final int LEGS = 4;
     private static final int EARS = 2;
@@ -26,6 +28,16 @@ public class Cat
     {
         this();
         weight = setWeight;
+    }
+
+    public void setColor(Color color)
+    {
+       this.color = color;
+    }
+
+    public Color getColor()
+    {
+        return color;
     }
 
     public static int getCount()

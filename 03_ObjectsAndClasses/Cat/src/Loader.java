@@ -10,13 +10,8 @@ public class Loader
     public static void main(String[] args)
     {
         Cat murka = new Cat();
-        System.out.println(murka.getWeight());
-        Cat murka2 = getKitten();
-        Cat murka3 = getKitten();
-        Cat murka4 = getKitten();
-        System.out.println(murka2.getWeight());
-        System.out.println(murka3.getWeight());
-        System.out.println(murka4.getWeight());
+        murka.setColor(Color.BLACK);
+        System.out.println(murka.getColor());
 
 
     }
