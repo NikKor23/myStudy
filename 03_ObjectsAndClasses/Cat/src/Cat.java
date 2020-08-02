@@ -22,6 +22,12 @@ public class Cat
 
     }
 
+    public Cat(double setWeight)
+    {
+        this();
+        weight = setWeight;
+    }
+
     public static int getCount()
     {
         return count;

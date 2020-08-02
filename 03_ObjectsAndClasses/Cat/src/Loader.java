@@ -1,29 +1,23 @@
 
 public class Loader
 {
+
+    private static Cat getKitten()
+    {
+        return new Cat(1100.0);
+    }
+
     public static void main(String[] args)
     {
         Cat murka = new Cat();
-        Cat murka2 = new Cat();
-        Cat murka3 = new Cat();
-        Cat murka4 = new Cat();
-        Cat murka5 = new Cat();
-        System.out.println(Cat.getCount() + " cats");
-        System.out.println("Murka weight " + murka.getWeight());
-        System.out.println("Murka2 weight " + murka2.getWeight());
-        while (murka.getWeight() > 1000)
-        {
-            murka.meow();
-        }
-        while (murka2.getWeight() < 9000)
-        {
-            murka2.feed(10.0);
-        }
-        System.out.println("Murka weight " + murka.getWeight());
-        System.out.println("Murka2 weight " + murka2.getWeight());
-        System.out.println(Cat.getCount()+ " cats");
-        murka.meow();
-        murka.feed(10.0);
-        murka2.pee();
+        System.out.println(murka.getWeight());
+        Cat murka2 = getKitten();
+        Cat murka3 = getKitten();
+        Cat murka4 = getKitten();
+        System.out.println(murka2.getWeight());
+        System.out.println(murka3.getWeight());
+        System.out.println(murka4.getWeight());
+
+
     }
 }
