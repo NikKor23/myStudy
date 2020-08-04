@@ -24,6 +24,14 @@ public class Cat
 
     }
 
+    public Cat (Cat other)
+    {
+        this();
+        this.weight = other.weight;
+        this.color = other.color;
+    }
+
+
     public Cat(double setWeight)
     {
         this();
