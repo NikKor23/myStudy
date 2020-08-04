@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/03_ObjectsAndClasses/Cat/Cat.iml" filepath="$PROJECT_DIR$/03_ObjectsAndClasses/Cat/Cat.iml" />
+      <module fileurl="file://$PROJECT_DIR$/04_NumbersStringsAndDates/GeometryCalculator/GeometryCalculator.iml" filepath="$PROJECT_DIR$/04_NumbersStringsAndDates/GeometryCalculator/GeometryCalculator.iml" />
+      <module fileurl="file://$PROJECT_DIR$/04_NumbersStringsAndDates/IntegerExperiments/IntegerExperiments.iml" filepath="$PROJECT_DIR$/04_NumbersStringsAndDates/IntegerExperiments/IntegerExperiments.iml" />
+      <module fileurl="file://$PROJECT_DIR$/03_ObjectsAndClasses/RoadController/RoadController.iml" filepath="$PROJECT_DIR$/03_ObjectsAndClasses/RoadController/RoadController.iml" />
+      <module fileurl="file://$PROJECT_DIR$/04_NumbersStringsAndDates/StringExperiments/StringExperiments.iml" filepath="$PROJECT_DIR$/04_NumbersStringsAndDates/StringExperiments/StringExperiments.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/java_basics.iml" filepath="$PROJECT_DIR$/.idea/java_basics.iml" />
+    </modules>
+  </component>
+</project>
