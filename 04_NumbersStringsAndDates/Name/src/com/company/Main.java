@@ -8,7 +8,39 @@ public class Main {
         System.out.println("Введите ФИО (Например: Терентьев Михаил Павлович)");
         Scanner scanner = new Scanner(System.in);
         String name = scanner.nextLine();
-        showName(name);
+        showNameNew(name);
+    }
+
+    public static void showNameNew (String fio) {
+        fio = fio.trim();
+        int err = 0;
+        for (int i = 0; i <= fio.length() - 1; i++) {
+            if (Character.isDigit(fio.charAt(i))) {
+                System.out.println("Вы ввели цифры");
+                err = 1;
+                break;
+            }
+        }
+        if (fio.length() == 0 || err == 1) {
+            System.out.println("Неверный формат имени!");
+        }
+        else {
+            String[] string = fio.split("\\s+", 3);
+            for (int i = 0; i <= string.length - 1; i++) {
+                switch (i) {
+                    case 0:
+                        System.out.println("Фамилия: " + string[i]);
+                        break;
+                    case 1:
+                        System.out.println("Имя: " + string[i]);
+                        break;
+                    case 2:
+                        System.out.println("Отчество: " + string[i]);
+                        break;
+                }
+
+            }
+        }
     }
 
     public static void showName(String fio){

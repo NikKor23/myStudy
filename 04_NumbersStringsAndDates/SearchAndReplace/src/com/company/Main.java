@@ -6,7 +6,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        String safe = searchAndReplaceDiamonds("Номер кредитной карты 4008 1234 5678> 8912", "* * ");
+        String safe = searchAndReplaceDiamonds("Номер кредитной карты <4008> 1234 5678> 8912", "* *");
     }
 
     public static String searchAndReplaceDiamonds(String text, String placeHolder){
@@ -24,8 +24,7 @@ public class Main {
             System.out.println(err);
             return null;
         }
-        String sub = text.substring(s + 1, e);
-        text = text.replace(sub, placeHolder);
+        text = text.replaceAll("<.*>", placeHolder);
         System.out.println(text);
         return text;
     }
