@@ -13,6 +13,7 @@ public class Main {
     public static void textSpliter (String text) {
         String[]  splitText = text.split("\\s+");
         for (int i = 0; i < splitText.length; i++) {
+            splitText[i] = splitText[i].replaceAll("[^a-zA-Z0-9]", "");
             System.out.println(splitText[i]);
         }
     }
