@@ -14,112 +14,106 @@ public class Main {
         toDoList.add("Четвёртое дело");
         toDoList.add("Пятое дело");
         toDoList.add("Шестое дело");
-        Scanner scanner = new Scanner(System.in);
-        String string = scanner.nextLine();
-        string = string.trim();
-        String arrayString[] = string.split("\\s+");
-        switch (arrayString[0]) {
-            case ("LIST"): {
-                if (toDoList.size() == 0) {
-                    System.out.println("Список дел пуст!");
-                 return;
-                }
-                else {
-                    for (int i = 0; i < toDoList.size(); i++) {
-                        System.out.println(i + " " + toDoList.get(i));
-                    }
-                }
-                break;
+        for (;;) {
 
-            }
-            case ("ADD"): {
-                if (arrayString.length == 1) {
-                    System.out.println("Что добавлять?");
-                }
-                else if (isNumber(arrayString[1])){
-                    if (arrayString.length == 2) {
-                        System.out.println("Вы не ввели название дела");
+            Scanner scanner = new Scanner(System.in);
+            String string = scanner.nextLine();
+            string = string.trim();
+            String arrayString[] = string.split("\\s+");
+            switch (arrayString[0]) {
+                case ("LIST"): {
+                    if (toDoList.size() == 0) {
+                        System.out.println("Список дел пуст!");
                         return;
-                    }
-                    else {
-                        int addNumber = Integer.parseInt(arrayString[1]);
-                        if (addNumber > toDoList.size() - 1) {
-                           addNumber = toDoList.size();
-                            System.out.println("Номер дела больше списка, дело добавлено в конец");
+                    } else {
+                        for (int i = 0; i < toDoList.size(); i++) {
+                            System.out.println(i + " " + toDoList.get(i));
                         }
+                    }
+                    break;
+
+                }
+                case ("ADD"): {
+                    if (arrayString.length == 1) {
+                        System.out.println("Что добавлять?");
+                    } else if (isNumber(arrayString[1])) {
+                        if (arrayString.length == 2) {
+                            System.out.println("Вы не ввели название дела");
+                        } else {
+                            int addNumber = Integer.parseInt(arrayString[1]);
+                            if (addNumber > toDoList.size() - 1) {
+                                addNumber = toDoList.size();
+                                System.out.println("Номер дела больше списка, дело добавлено в конец");
+                            }
+                            String addName = "";
+                            for (int i = 2; i <= arrayString.length - 1; i++) {
+                                addName = addName + arrayString[i];
+                            }
+                            toDoList.add(addNumber, addName);
+                            for (int i = 0; i < toDoList.size(); i++) {
+                                System.out.println(i + " " + toDoList.get(i));
+                            }
+                        }
+                    } else {
                         String addName = "";
-                        for (int i = 2; i <= arrayString.length - 1; i++){
+                        for (int i = 1; i <= arrayString.length - 1; i++) {
                             addName = addName + arrayString[i];
                         }
-                        toDoList.add(addNumber,addName);
+                        toDoList.add(addName);
                         for (int i = 0; i < toDoList.size(); i++) {
                             System.out.println(i + " " + toDoList.get(i));
                         }
                     }
+                    break;
                 }
-                else {
-                    String addName  = "";
-                    for (int i = 1; i <= arrayString.length - 1; i++){
-                        addName = addName + arrayString[i];
+                case ("DELETE"): {
+                    if (arrayString.length == 1) {
+                        System.out.println("Что удалять?");
+                    } else {
+                        if (isNumber(arrayString[1])) {
+                            int deleteNumber = Integer.parseInt(arrayString[1]);
+                            if (deleteNumber > toDoList.size() - 1) {
+                                System.out.println("Такого дела нет!");
+
+                            }
+                            toDoList.remove(deleteNumber);
+                            for (int i = 0; i < toDoList.size(); i++) {
+                                System.out.println(i + " " + toDoList.get(i));
+                            }
+                        } else System.out.println("Не могу понять, что ты хочеш удалить?");
                     }
-                    toDoList.add(addName);
-                    for (int i = 0; i < toDoList.size(); i++) {
-                        System.out.println(i + " " + toDoList.get(i));
-                    }
+                    break;
                 }
-                break;
-            }
-            case ("DELETE"): {
-                if (arrayString.length == 1) {
-                    System.out.println("Что удалять?");
-                }
-                else {
-                    if (isNumber(arrayString[1])) {
-                        int deleteNumber = Integer.parseInt(arrayString[1]);
-                        if (deleteNumber > toDoList.size() - 1) {
-                            System.out.println("Такого дела нет!");
-                            return;
-                        }
-                        toDoList.remove(deleteNumber);
-                        for (int i = 0; i < toDoList.size(); i++) {
-                            System.out.println(i + " " + toDoList.get(i));
-                        }
-                    }
-                    else System.out.println("Не могу понять, что ты хочеш удалить?");
-                }
-                break;
-            }
-            case ("EDIT"): {
-                if (arrayString.length == 1) {
-                    System.out.println("Что исправлять?");
-                }
-                else if (isNumber(arrayString[1])) {
+                case ("EDIT"): {
+                    if (arrayString.length == 1) {
+                        System.out.println("Что исправлять?");
+                    } else if (isNumber(arrayString[1])) {
                         if (arrayString.length == 2) {
                             System.out.println("Вы не ввели новое название");
-                            return;
+
                         }
                         int editNumber = Integer.parseInt(arrayString[1]);
                         if (editNumber > toDoList.size() - 1) {
                             System.out.println("Такого дела нет!");
-                            return;
+
                         }
-                    toDoList.remove(editNumber);
-                    String editName = "";
-                    for (int i = 2; i <= arrayString.length - 1; i++){
+                        toDoList.remove(editNumber);
+                        String editName = "";
+                        for (int i = 2; i <= arrayString.length - 1; i++) {
                             editName = editName + arrayString[i];
-                    }
-                    toDoList.add(editNumber, editName);
-                    for (int i = 0; i < toDoList.size(); i++) {
+                        }
+                        toDoList.add(editNumber, editName);
+                        for (int i = 0; i < toDoList.size(); i++) {
                             System.out.println(i + " " + toDoList.get(i));
+                        }
+                    } else {
+                        System.out.println("Какое дело по счёту исправлять?");
                     }
-                    }
-                else {
-                    System.out.println("Какое дело по счёту исправлять?");
+                    break;
                 }
-                break;
+                default:
+                    System.out.println("Ничего не понимаю!!!");
             }
-            default:
-                System.out.println("Ничего не понимаю!!!");
         }
 
     }
