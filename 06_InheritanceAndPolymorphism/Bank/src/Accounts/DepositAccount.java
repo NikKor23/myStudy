@@ -1,69 +1,45 @@
 package Accounts;
 
-import Accounts.BankAccount;
-
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 
 public class DepositAccount extends BankAccount
 {
-    public static int isTransaction = 0;
-    GregorianCalendar calendar = new GregorianCalendar();
-    GregorianCalendar calendarOfTake = new GregorianCalendar();
-    Date date = new Date();
-    Date dateOfTake = new Date();
+    Calendar calendar = new GregorianCalendar();
+    Calendar calendarOfTake = new GregorianCalendar();
 
-    public DepositAccount(float moneyAmount)
-    {
+    public DepositAccount(float moneyAmount) {
         super(moneyAmount);
-        System.out.println("Создан депозитный счёт. Балланс: " + moneyAmount);
-        calendarOfTake.add(Calendar.MONTH, 1);
-        dateOfTake = calendarOfTake.getTime();
+        calendar = Calendar.getInstance();
     }
 
 
 
     public void withdrawMoney(float amount)
     {
-        date = calendar.getTime();
-        if (date.after(dateOfTake) || date.equals(dateOfTake)){
-            if (moneyAmount == 0 || amount > moneyAmount) {
-                System.out.println("Недостаточно средств");
-            }
-            else {
-                moneyAmount = moneyAmount - amount;
-                System.out.println("Списание средств: " + amount);
-                isTransaction = 1;
-            }
+        int days;
+        calendarOfTake = Calendar.getInstance();
+        if (calendarOfTake.get(Calendar.YEAR) != calendar.get(Calendar.YEAR)) {
+            int firstDate =  calendarOfTake.getActualMaximum(Calendar.DAY_OF_YEAR) - calendarOfTake.get(Calendar.DAY_OF_YEAR);
+            int secondDate = calendar.get(Calendar.DAY_OF_YEAR);
+            days = firstDate + secondDate;
+        }
+        else {
+            days = calendarOfTake.get(Calendar.DAY_OF_YEAR) - calendar.get(Calendar.DAY_OF_YEAR);
+        }
+        if (days >= 30) {
+            super.withdrawMoney(amount);
+        }
+        else {
+            System.out.println("С последнего пополнения счёта не прошёл месяц!");
 
         }
-        else System.out.println("С последнего пополнения счёта не прошёл месяц! Ближайшай дата снятия: " + dateOfTake);
     }
 
     public void toPutMoney (float amount)
     {
-        this.moneyAmount = moneyAmount + amount;
-        date = calendar.getTime();
-        System.out.println("Внесение денежных средств: " + amount + " Дата внесения: " + date);
-        calendarOfTake.add(Calendar.MONTH, 1);
+        calendar = Calendar.getInstance();
+        super.toPutMoney(amount);
 
-    }
-
-    public boolean send(BankAccount receiver, float amount ){
-        if (amount > moneyAmount) {
-            System.out.println("Недостаточно средств для перевода");
-            return false;
-        }
-        else {
-            withdrawMoney(amount);
-            if (isTransaction == 1) {
-                receiver.toPutMoney(amount);
-                System.out.println("Денежные средства успешно перечислены.");
-                isTransaction = 0;
-                return true;
-            }
-            else return false;
-        }
     }
 }

@@ -4,6 +4,7 @@ package Accounts;
 public class BankAccount
 {
     public float moneyAmount;
+    public boolean isTransaction = false;
 
     public BankAccount(float moneyAmount)
     {
@@ -25,11 +26,13 @@ public class BankAccount
     {
         if (amount > moneyAmount ) {
             System.out.println("Недостаточно средств для снятия.");
+            isTransaction = false;
             return;
         }
         else {
             moneyAmount = moneyAmount - amount;
             System.out.println("Снятие денежных средств: " + amount);
+            isTransaction = true;
         }
     }
 
@@ -50,9 +53,16 @@ public class BankAccount
         }
         else {
             withdrawMoney(amount);
-            receiver.toPutMoney(amount);
-            System.out.println("Средства успешно перечислены.");
-            return true;
+            if (isTransaction == true) {
+                receiver.toPutMoney(amount);
+                System.out.println("Средства успешно перечислены.");
+                isTransaction = false;
+                return true;
+            }
+            else {
+                System.out.println("Операция не выполснена!");
+                return false;
+            }
         }
     }
 }
