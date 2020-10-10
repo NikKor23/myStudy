@@ -10,5 +10,9 @@ public class Main {
         BankAccount myAccount = new BankAccount(10000);
         CardAccount second = new CardAccount(20000);
         DepositAccount third = new DepositAccount(50000);
+
+        second.withdrawMoney(19802);
+        second.cashBalance();
+
     }
 }

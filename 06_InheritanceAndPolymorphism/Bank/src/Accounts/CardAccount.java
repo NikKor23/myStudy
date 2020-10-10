@@ -1,18 +1,19 @@
 package Accounts;
 
+import java.math.BigDecimal;
+
 public class CardAccount extends BankAccount{
 
-    public static final float WITHDRAWALTAX = 1.01f;
+    BigDecimal tax = new BigDecimal(1.01);
 
-    public CardAccount(float moneyAmount) {
+    public CardAccount(double moneyAmount) {
         super(moneyAmount);
     }
 
-    public void withdrawMoney(float amount) {
-        super.withdrawMoney(amount * WITHDRAWALTAX);
-        if (isTransaction) {
-            System.out.println("В том числе за совершение операции " + ((amount * WITHDRAWALTAX) - amount));
-        }
+    public void withdrawMoney(double amountD) {
+        BigDecimal amount = BigDecimal.valueOf(amountD);
+        amount = amount.multiply(tax);
+        super.withdrawMoney(amount.doubleValue());
     }
 
 

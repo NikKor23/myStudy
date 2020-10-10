@@ -1,32 +1,29 @@
 package Accounts;
 
+import jdk.vm.ci.meta.Local;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 public class DepositAccount extends BankAccount
 {
-    Calendar calendar = new GregorianCalendar();
-    Calendar calendarOfTake = new GregorianCalendar();
+    LocalDate firstDate;
+    LocalDate secondDate;
 
-    public DepositAccount(float moneyAmount) {
+    public DepositAccount(double moneyAmount) {
         super(moneyAmount);
-        calendar = Calendar.getInstance();
+        firstDate = LocalDate.now();
     }
 
 
 
-    public void withdrawMoney(float amount)
+    public void withdrawMoney(double amount)
     {
-        int days;
-        calendarOfTake = Calendar.getInstance();
-        if (calendarOfTake.get(Calendar.YEAR) != calendar.get(Calendar.YEAR)) {
-            int firstDate =  calendarOfTake.getActualMaximum(Calendar.DAY_OF_YEAR) - calendarOfTake.get(Calendar.DAY_OF_YEAR);
-            int secondDate = calendar.get(Calendar.DAY_OF_YEAR);
-            days = firstDate + secondDate;
-        }
-        else {
-            days = calendarOfTake.get(Calendar.DAY_OF_YEAR) - calendar.get(Calendar.DAY_OF_YEAR);
-        }
+        secondDate = LocalDate.now();
+        long days =  ChronoUnit.DAYS.between(firstDate, secondDate);
         if (days >= 30) {
             super.withdrawMoney(amount);
         }
@@ -36,10 +33,10 @@ public class DepositAccount extends BankAccount
         }
     }
 
-    public void toPutMoney (float amount)
+    public void toPutMoney (double amount)
     {
-        calendar = Calendar.getInstance();
         super.toPutMoney(amount);
+        firstDate = LocalDate.now();
 
     }
 }

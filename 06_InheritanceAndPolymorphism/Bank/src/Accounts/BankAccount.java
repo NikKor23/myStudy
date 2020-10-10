@@ -1,68 +1,52 @@
 package Accounts;
 
 
+import java.math.BigDecimal;
+import java.text.Bidi;
+
 public class BankAccount
 {
-    public float moneyAmount;
-    public boolean isTransaction = false;
+    public BigDecimal moneyAmount;
 
-    public BankAccount(float moneyAmount)
+    public BankAccount(double amount)
     {
-        this.moneyAmount = moneyAmount;
+        moneyAmount = BigDecimal.valueOf(amount);
         System.out.println("Создан банковский счёт. Балланс: " + moneyAmount);
     }
 
-    public void setMoneyAmount(float moneyAmount)
+    public void withdrawMoney(double amountD)
     {
-        this.moneyAmount = moneyAmount;
-    }
-
-    public float getMoneyAmount(float moneyAmount)
-    {
-        return moneyAmount;
-    }
-
-    public void withdrawMoney(float amount)
-    {
-        if (amount > moneyAmount ) {
+        BigDecimal amount = BigDecimal.valueOf(amountD);
+        if (amount.compareTo(moneyAmount) > 0) {
             System.out.println("Недостаточно средств для снятия.");
-            isTransaction = false;
             return;
         }
         else {
-            moneyAmount = moneyAmount - amount;
+            moneyAmount = moneyAmount.subtract(amount);
             System.out.println("Снятие денежных средств: " + amount);
-            isTransaction = true;
         }
     }
 
-    public void toPutMoney (float amount) {
-        moneyAmount = moneyAmount + amount;
+    public void toPutMoney (double amount) {
+        moneyAmount = moneyAmount.add(BigDecimal.valueOf(amount));
         System.out.println("Внесение денежных средств: " + amount);
     }
 
-    public float cashBalance () {
+    public BigDecimal cashBalance () {
         System.out.println("Остаток средств на счёте: " + moneyAmount);
         return moneyAmount;
     }
 
-    public boolean send( BankAccount receiver, float amount ){
-        if (amount > moneyAmount) {
+    public boolean send(BankAccount receiver, double amount){
+        if (BigDecimal.valueOf(amount).compareTo(moneyAmount) > 0) {
             System.out.println("Недостаточно средств для перевода");
             return false;
         }
         else {
             withdrawMoney(amount);
-            if (isTransaction == true) {
-                receiver.toPutMoney(amount);
-                System.out.println("Средства успешно перечислены.");
-                isTransaction = false;
-                return true;
-            }
-            else {
-                System.out.println("Операция не выполснена!");
-                return false;
-            }
+            receiver.toPutMoney(amount);
+            System.out.println("Средства успешно перечислены.");
+            return true;
         }
     }
 }
