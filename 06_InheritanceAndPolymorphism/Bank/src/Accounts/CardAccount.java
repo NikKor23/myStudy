@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 
 public class CardAccount extends BankAccount{
 
-    BigDecimal tax = new BigDecimal(1.01);
+    public BigDecimal tax = BigDecimal.valueOf(1.01);
 
     public CardAccount(double moneyAmount) {
         super(moneyAmount);

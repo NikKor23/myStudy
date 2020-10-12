@@ -2,11 +2,10 @@ package Accounts;
 
 
 import java.math.BigDecimal;
-import java.text.Bidi;
 
 public class BankAccount
 {
-    public BigDecimal moneyAmount;
+    private BigDecimal moneyAmount;
 
     public BankAccount(double amount)
     {

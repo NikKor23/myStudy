@@ -3,6 +3,8 @@ import Accounts.BankAccount;
 import Accounts.CardAccount;
 import Accounts.DepositAccount;
 
+import java.math.BigDecimal;
+
 public class Main {
 
     public static void main(String[] args) {
@@ -11,8 +13,9 @@ public class Main {
         CardAccount second = new CardAccount(20000);
         DepositAccount third = new DepositAccount(50000);
 
-        second.withdrawMoney(19802);
+        second.withdrawMoney(19800);
         second.cashBalance();
+
 
     }
 }

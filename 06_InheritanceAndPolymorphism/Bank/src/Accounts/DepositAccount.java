@@ -1,17 +1,12 @@
 package Accounts;
 
-import jdk.vm.ci.meta.Local;
-
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 
 public class DepositAccount extends BankAccount
 {
-    LocalDate firstDate;
-    LocalDate secondDate;
+    private LocalDate firstDate;
+    private LocalDate secondDate;
 
     public DepositAccount(double moneyAmount) {
         super(moneyAmount);
