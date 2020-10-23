@@ -10,14 +10,15 @@ public class Company
 {
     private String name;
     protected BigDecimal income;
-    public List<BigDecimal> employees = new ArrayList<>();
-    private List<BigDecimal> employeesSorted = new ArrayList<>();
+    public List<Employee> employees = new ArrayList<>();
+    private List<Employee> employeesSorted = new ArrayList<>();
 
 
 
     public Company(String name)
     {
         this.name = name;
+        this.income =  new BigDecimal((Math.random() * 4500000) + 7000000);
         this.income = getIncome().setScale(2, RoundingMode.HALF_UP);
         System.out.println("Добавлена компания " + this.name +
                 ". Месячный доход компании " + this.income);
@@ -25,7 +26,6 @@ public class Company
 
     public BigDecimal getIncome()
     {
-        this.income =  new BigDecimal((Math.random() * 4500000) + 7000000);
         return income;
     }
 
@@ -33,19 +33,19 @@ public class Company
     {
         Employee employee;
         if (string ==  "operator") {
-            employee = new Operator();
+            employee = new Operator(Company.this);
         }
         else if (string ==  "topmanager") {
-            employee = new TopManager();
+            employee = new TopManager(Company.this);
         }
         else if (string ==  "manager"){
-            employee = new Manager();
+            employee = new Manager(Company.this);
         }
         else {
-            System.out.println("Вы наняли уборщицу, она работает на добровольной основе");
+            System.out.println("You hired a cleaning lad. She work for free");
             return;
         }
-        employees.add(employee.getMonthSalary(income));
+        employees.add(employee);
     }
 
     public void hireAll(String string, int count)
@@ -78,59 +78,80 @@ public class Company
         System.out.println("You hired " + count + " employees");
     }
 
-    public List<BigDecimal> getTopSalaryStaff(int count)
+    public List<Employee> getTopSalaryStaff(int count)
     {
         if (count <= 0) {
             System.out.println("Wrong number");
             return null;
         }
         else {
+            if (employees.size() == 0)
+            {
+                System.out.println("No employees");
+                return null;
+            }
             employeesSorted.addAll(employees);
             System.out.println("Top salary staff: ");
             if (count > employeesSorted.size()) count = employeesSorted.size();
-            employeesSorted.sort(new Comparator<BigDecimal>() {                         // Тут происходит сортировка листа
-                public int compare(BigDecimal o1, BigDecimal o2) {
-                    return o2.compareTo(o1);
+            employeesSorted.sort(new Comparator<Employee>() {                         // Тут происходит сортировка листа
+                public int compare(Employee o1, Employee o2) {
+                    return o2.getMonthSalary().compareTo(o1.getMonthSalary());
                 }
             });
             BigDecimal p = new BigDecimal(0);
             for (int i = 0; i < count; i++) {
-                if (!employeesSorted.get(i).equals(p)) System.out.println(employeesSorted.get(i));
+                if (!employeesSorted.get(i).getMonthSalary().equals(p)) System.out.print(employeesSorted.get(i).getMonthSalary() + " ");
                 else {
                     employeesSorted.remove(i);                                          // Здесь я вывожу список элементов, при этом проверяю,
                     i--;                                                                // если такой элемент я уже выводил, то удаляю его
                 }
-                p = employeesSorted.get(i);
+                p = employeesSorted.get(i).getMonthSalary();
             }
+            System.out.println();
             return employeesSorted;
         }
     }
 
-    public List<BigDecimal> getLowestSalaryStaff(int count)
+    public List<Employee> getLowestSalaryStaff(int count)
     {
         if (count <= 0) {
             System.out.println("Wrong number");
             return null;
         }
         else {                                                                      // Этот метод полностью такой же как и getTopSalaryStaff,
-            employeesSorted.addAll(employees);                                      // за исключением компаратора, он сортирует наоборот
+            if (employees.size() == 0)                                              // за исключением компаратора, он сортирует наоборот
+            {
+                System.out.println("No employees");
+                return null;
+            }
+            employeesSorted.addAll(employees);
             System.out.println("Lowest salary staff: ");
             if (count > employeesSorted.size()) count = employeesSorted.size();
-            employeesSorted.sort(new Comparator<BigDecimal>() {
-                public int compare(BigDecimal o1, BigDecimal o2) {
-                    return o1.compareTo(o2);
+            employeesSorted.sort(new Comparator<Employee>() {
+                public int compare(Employee o1, Employee o2) {
+                    return o1.getMonthSalary().compareTo(o2.getMonthSalary());
                 }
             });
             BigDecimal p = new BigDecimal(0);
             for (int i = 0; i < count; i++) {
-                if (!employeesSorted.get(i).equals(p)) System.out.println(employeesSorted.get(i));
+                if (!employeesSorted.get(i).getMonthSalary().equals(p)) System.out.print(employeesSorted.get(i).getMonthSalary() + " ");
                 else {
                     employeesSorted.remove(i);
                     i--;
                 }
-                p = employeesSorted.get(i);
+                p = employeesSorted.get(i).getMonthSalary();
             }
+
+            System.out.println();
             return employeesSorted;
+        }
+    }
+
+    public void empList()
+    {
+        for (int i = 0; i < employees.size(); i++)
+        {
+            System.out.print(employees.get(i).getMonthSalary()+ " ");
         }
     }
 

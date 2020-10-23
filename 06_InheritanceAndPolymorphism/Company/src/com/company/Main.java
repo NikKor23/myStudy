@@ -1,10 +1,5 @@
 package com.company;
 
-import Employee.*;
-
-import java.util.ArrayList;
-import java.util.TreeMap;
-
 public class Main
 {
     public static void main(String[] args) {
@@ -13,17 +8,11 @@ public class Main
         apple.hireAll("operator",180);
         apple.hireAll("manager",80);
         apple.hireAll("topmanager",10);
-        apple.getTopSalaryStaff(15);
-        apple.getLowestSalaryStaff(15);
-        apple.fire(200);
-        apple.getTopSalaryStaff(15);
-        apple.getLowestSalaryStaff(15);
-
-
-
-
-
-
+        apple.getTopSalaryStaff(10);
+        apple.getLowestSalaryStaff(30);
+        apple.fire(135);
+        apple.getTopSalaryStaff(10);
+        apple.getLowestSalaryStaff(30);
 
 
 

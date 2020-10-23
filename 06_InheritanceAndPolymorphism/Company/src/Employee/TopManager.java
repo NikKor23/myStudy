@@ -7,23 +7,22 @@ import java.math.RoundingMode;
 
 public class TopManager implements Employee{
 
+    private BigDecimal companyIncome;
     private final BigDecimal fixTopManagerSalary = new BigDecimal(90000);
     private final BigDecimal incomeThreshold = new BigDecimal(10000000);
     private BigDecimal salaryBonus = new BigDecimal(1.5);
-    private BigDecimal monthSalary ;
+    private BigDecimal monthSalary;
 
-    public void TopManager()
+    public TopManager(Company company)
     {
-
+        companyIncome = company.getIncome();
+        if (companyIncome.compareTo(incomeThreshold) > 0)  monthSalary = fixTopManagerSalary.multiply(salaryBonus);
+        else monthSalary =  fixTopManagerSalary;
     }
 
     @Override
-    public BigDecimal getMonthSalary(BigDecimal income)
+    public BigDecimal getMonthSalary()
     {
-        if (income.compareTo(incomeThreshold) > 0) {
-            monthSalary = fixTopManagerSalary.multiply(salaryBonus).add(fixTopManagerSalary).setScale(0, RoundingMode.HALF_UP);
-        }
-        else monthSalary = fixTopManagerSalary.setScale(0, RoundingMode.HALF_UP);
         return monthSalary;
     }
 }
