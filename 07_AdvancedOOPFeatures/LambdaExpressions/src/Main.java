@@ -1,9 +1,9 @@
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
-import java.util.stream.Stream;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class Main
 {
@@ -13,8 +13,12 @@ public class Main
     public static void main(String[] args)
     {
         ArrayList<Employee> staff = loadStaffFromFile();
-
-
+        Collections.sort(staff, (o1, o2) -> {
+            if (o1.getSalary().compareTo(o2.getSalary()) == 0) {
+                return o1.getName().compareTo(o2.getName());
+            } else return o1.getSalary().compareTo(o2.getSalary());
+        });
+        for (Employee employee : staff) System.out.println(employee);
     }
 
     private static ArrayList<Employee> loadStaffFromFile()
