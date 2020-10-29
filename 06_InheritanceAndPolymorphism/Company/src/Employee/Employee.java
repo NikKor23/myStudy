@@ -7,4 +7,6 @@ import java.math.BigDecimal;
 public interface Employee
 {
     public BigDecimal getMonthSalary();
+
+    public void setCompany(Company company);
 }
