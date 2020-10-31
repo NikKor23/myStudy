@@ -4,9 +4,7 @@ import Employee.Employee;
 import Employee.Operator;
 import Employee.TopManager;
 import Employee.Manager;
-
 import java.util.ArrayList;
-import java.util.List;
 
 public class Main
 {

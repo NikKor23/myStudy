@@ -5,12 +5,11 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.*;
 
-
 public class Company
 {
     private String name;
     protected BigDecimal income;
-    public List<Employee> employees = new ArrayList<>();
+    public List<Employee> employees;
 
     public Company(String name)
     {
@@ -19,6 +18,7 @@ public class Company
         this.income = getIncome().setScale(2, RoundingMode.HALF_UP);
         System.out.println("Добавлена компания " + this.name +
                 ". Месячный доход компании " + this.income);
+        employees = new ArrayList<>();
     }
 
     public BigDecimal getIncome()
