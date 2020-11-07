@@ -1,9 +1,7 @@
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class Main
 {
@@ -13,12 +11,11 @@ public class Main
     public static void main(String[] args)
     {
         ArrayList<Employee> staff = loadStaffFromFile();
-        Collections.sort(staff, (o1, o2) -> {
-            if (o1.getSalary().compareTo(o2.getSalary()) == 0) {
-                return o1.getName().compareTo(o2.getName());
-            } else return o1.getSalary().compareTo(o2.getSalary());
-        });
-        for (Employee employee : staff) System.out.println(employee);
+        Calendar startDate = new GregorianCalendar(2017,0,1);
+        Calendar endDate = new GregorianCalendar(2018,0,1);
+        staff.stream().filter(e -> e.getWorkStart().compareTo(startDate.getTime()) >= 0 && e.getWorkStart().compareTo(endDate.getTime()) < 0)
+                      .max(Comparator.comparing(Employee::getSalary))
+                      .ifPresent(System.out::print);
     }
 
     private static ArrayList<Employee> loadStaffFromFile()
