@@ -10,8 +10,7 @@ public class CustomerStorage
         storage = new HashMap<>();
     }
 
-    public void addCustomer(String data)
-    {
+    public void addCustomer(String data) throws MyException {
         String[] components = data.split("\\s+");
         if (components.length != 4) {
             throw new IllegalArgumentException("Wrong customer format! Correct format: " +
@@ -24,6 +23,7 @@ public class CustomerStorage
             throw new IllegalArgumentException("Wrong customer number! Correct format: +71234567890");
         }
         String name = components[0] + " " + components[1];
+        if (storage.containsKey(name)) throw new MyException(name + " is already added");
         storage.put(name, new Customer(name, components[3], components[2]));
     }
 
@@ -32,8 +32,10 @@ public class CustomerStorage
         storage.values().forEach(System.out::println);
     }
 
-    public void removeCustomer(String name)
-    {
+    public void removeCustomer(String name) throws MyException {
+        if (!storage.containsKey(name)) {
+            throw new MyException("There is not" + name);
+        }
         storage.remove(name);
     }
 

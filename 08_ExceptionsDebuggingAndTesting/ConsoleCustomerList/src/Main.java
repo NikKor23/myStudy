@@ -27,8 +27,10 @@ public class Main
                         } else System.out.println(commandError);
                 } else if (tokens.length == 1) {
                         if (tokens[0].equals("list")) {
+                            if (executor.getCount() == 0) throw new MyException("Customer list is empty");
                             executor.listCustomers();
                         } else if (tokens[0].equals("count")) {
+                            if (executor.getCount() == 0) throw new MyException("Customer list is empty");
                             System.out.println("There are " + executor.getCount() + " customers");
                         } else if (tokens[0].equals("help")) {
                             System.out.println(helpText);
