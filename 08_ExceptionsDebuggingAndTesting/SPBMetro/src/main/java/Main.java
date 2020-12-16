@@ -1,5 +1,7 @@
 import core.Line;
 import core.Station;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -12,6 +14,8 @@ import java.util.Scanner;
 
 public class Main
 {
+    private static Logger logger;
+
     private static String dataFile = "src/main/resources/map.json";
     private static Scanner scanner;
 
@@ -20,11 +24,13 @@ public class Main
     public static void main(String[] args)
     {
         RouteCalculator calculator = getRouteCalculator();
+        logger = LogManager.getRootLogger();
+
 
         System.out.println("Программа расчёта маршрутов метрополитена Санкт-Петербурга\n");
         scanner = new Scanner(System.in);
-        for(;;)
-        {
+        for(;;) {
+          try {
             Station from = takeStation("Введите станцию отправления:");
             Station to = takeStation("Введите станцию назначения:");
 
@@ -34,7 +40,15 @@ public class Main
 
             System.out.println("Длительность: " +
                 RouteCalculator.calculateDuration(route) + " минут");
+            if (RouteCalculator.calculateDuration(route) == 0.0) {
+                throw new IllegalArgumentException("Вы никуда не поехали!");
+            }
+          } catch (Exception ex) {
+            logger.error("Get the exception " + ex.getLocalizedMessage());
+            System.out.println(ex.getLocalizedMessage());
+          }
         }
+
     }
 
     private static RouteCalculator getRouteCalculator()
@@ -71,8 +85,10 @@ public class Main
             String line = scanner.nextLine().trim();
             Station station = stationIndex.getStation(line);
             if(station != null) {
+                logger.info("Search for " + line);
                 return station;
             }
+            logger.warn("Station in not found " + line);
             System.out.println("Станция не найдена :(");
         }
     }
