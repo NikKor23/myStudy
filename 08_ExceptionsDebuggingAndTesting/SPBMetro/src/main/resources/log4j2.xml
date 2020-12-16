@@ -9,10 +9,16 @@
 
     <File name="Search" fileName="logs/search.log">
       <PatternLayout pattern="%d{yyyy-mm-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+      <Filters>
+        <ThresholdFilter level="warn" onMatch="DENY" onMismatch="ACCEPT" />
+      </Filters>
     </File>
 
     <File name="InputErr" fileName="logs/input_errors.log">
       <PatternLayout pattern="%d{yyyy-mm-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+      <Filters>
+        <ThresholdFilter level="error" onMatch="DENY" onMismatch="ACCEPT" />
+      </Filters>
     </File>
 
     <File name="Exceptions" fileName="logs/exceptions.log">
