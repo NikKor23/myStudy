@@ -15,7 +15,7 @@ public class MetroHTMLParser {
     private static Map<String, Object> metro = new LinkedHashMap<>();
     private static Map<String, List<String>> stationList = new LinkedHashMap<>();
     private static List<Line> lineList = new ArrayList<>();
-    private static ArrayList<ArrayList<Station>> connectionsList = new ArrayList<>();
+    private static Set<Connection> connectionsSet = new TreeSet<>();
 
     public MetroHTMLParser(String site, String jsonFilePath) throws Exception {
         Document metroSiteDocument = Jsoup.connect(site).maxBodySize(0).get();
@@ -29,7 +29,15 @@ public class MetroHTMLParser {
             stationList.put(s1E.attr("data-line"),s1E.select("span.name").eachText());
         });
 
-        connectionsList = getConnectionsFromDocument(metroSiteDocument);
+        connectionsSet = getConnectionsFromDocument(metroSiteDocument);
+
+        ArrayList<ArrayList> connectionsList = new ArrayList<>();
+        connectionsSet.forEach(connection -> {
+            connectionsList.add(new ArrayList(connection.getStations()));
+        });
+        connectionsSet.forEach(c -> {
+            System.out.println(c);
+        });
 
         metro.put("stations", stationList);
         metro.put("lines", lineList);
@@ -47,8 +55,8 @@ public class MetroHTMLParser {
     }
 
 
-    private static ArrayList<ArrayList<Station>> getConnectionsFromDocument(Document document) {
-        List<TreeSet<Station>> connections = new ArrayList<>();
+    private static Set<Connection> getConnectionsFromDocument(Document document) {
+        Set<Connection> newSet = new TreeSet<>();
         Elements lines = document.select("div.js-metro-stations.t-metrostation-list-table");
         lines.forEach(l -> {
             l.select("p>a").select("a").forEach(s -> {
@@ -59,25 +67,23 @@ public class MetroHTMLParser {
                     Station dst = new Station(lineName, lineNumber);
 
                     boolean isAdded = false;
-                    for (TreeSet<Station> set : connections){
-                        if (set.contains(src) || set.contains(dst)) {
-                            set.add(src);
-                            set.add(dst);
+                    for (Connection  connection : newSet) {
+                        if (connection.contains(src) || connection.contains(dst)) {
+                            connection.addStation(src);
+                            connection.addStation(dst);
                             isAdded = true;
                         }
                     }
-                    if (!isAdded) connections.add(new TreeSet<Station>() {{
-                        add(src);
-                        add(dst);
-                    }});
+                    if (!isAdded) {
+                        Connection newConnection = new Connection();
+                        newConnection.addStation(dst);
+                        newConnection.addStation(src);
+                        newSet.add(newConnection);
+                    }
                 });
             });
         });
-        ArrayList<ArrayList<Station>> array = new ArrayList<>();
-        for (TreeSet<Station> set : connections) {
-            ArrayList<Station> newArray = new ArrayList(set);
-            array.add(newArray);
-        }
-        return array;
+
+        return newSet;
     }
 }
