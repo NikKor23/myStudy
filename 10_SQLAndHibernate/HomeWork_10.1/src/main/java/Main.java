@@ -1,31 +1,30 @@
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.boot.Metadata;
+import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.registry.StandardServiceRegistry;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Main {
 
-    public static final String URL = "jdbc:mysql://localhost:3306/skillbox";
-    public static final String USER = "root";
-    public static final String PASSWORD = "testtest";
-
     public static void main(String[] args)
     {
-        try {
-            Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT course_name AS Имя_курса, " +
-                    "COUNT(subscription_date)/MONTH(MAX(subscription_date)) AS Покупок_в_месяц " +
-                    "FROM Purchaselist GROUP BY course_name;");
-            while (resultSet.next()) {
-                System.out.println(resultSet.getString("Имя_курса") + "\t" + resultSet.getString("Покупок_в_месяц"));
-            }
+        Logger log = Logger.getLogger("org.hibernate");
+            log.setLevel(Level.OFF);
+        StandardServiceRegistry registry = new StandardServiceRegistryBuilder().configure("hibernate.cfg.xml").build();
+        Metadata metadata = new MetadataSources(registry).getMetadataBuilder().build();
+        SessionFactory sessionFactory = metadata.getSessionFactoryBuilder().build();
 
-            resultSet.close();
-            statement.close();
-            connection.close();
-        }catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        Session session = sessionFactory.openSession();
+        Course course = session.get(Course.class, 1);
+
+        Student student = session.get(Student.class, 1);
+
+        System.out.println(course.getName() + "\t Студентов на курсе: " + course.getStudentsCount());
+        System.out.println(student.getName()  + ", " + student.getAge()+ " лет. Дата регистрации: " + student.getRegistrationDate());
+        sessionFactory.close();
     }
 }
