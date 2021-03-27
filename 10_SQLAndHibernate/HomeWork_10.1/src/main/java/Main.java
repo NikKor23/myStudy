@@ -1,3 +1,4 @@
+import Entities.*;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
@@ -16,12 +17,14 @@ public class Main {
         SessionFactory sessionFactory = hibernateBuilder.getSessionFactory();
         Session session = sessionFactory.openSession();
 
-        Course course = session.get(Course.class, 1);
-
         Student student = session.get(Student.class, 1);
+        Course course = session.get(Course.class, 1);
+        Teacher teacher = session.get(Teacher.class, 10);
+        Purchase pl = session.get(Purchase.class, new PLID( "Абакумов Казимир", "PHP-разработчик с 0 до PRO"));
+        Subscription sub = session.get(Subscription.class, new SubID(100, 19));
 
-        System.out.println(course.getName() + "\t Студентов на курсе: " + course.getStudentsCount());
-        System.out.println(student.getName()  + ", " + student.getAge()+ " лет. Дата регистрации: " + student.getRegistrationDate());
+        System.out.println(pl.getSubscriptionDate() + " - " + pl.getPrice() );
+
         sessionFactory.close();
     }
 }

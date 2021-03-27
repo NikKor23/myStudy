@@ -1,4 +1,7 @@
+package Entities;
+
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name="Courses")
@@ -18,16 +21,24 @@ public class Course
 
     private String description;
 
-    @Column(name = "teacher_id")
-    private int teacherId;
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Teacher teacher;
 
     @Column(name = "students_count")
-    private int studentsCount;
+    private Integer studentsCount;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "Subscriptions",
+            joinColumns = {@JoinColumn(name = "course_id")},
+            inverseJoinColumns = {@JoinColumn(name = "student_id")}
+    )
+    private List<Student> students;
 
     private int price;
 
     @Column(name = "price_per_hour")
     private float pricePerHour;
+
 
     public int getId() {
         return id;
@@ -37,9 +48,7 @@ public class Course
         this.id = id;
     }
 
-    public String getName() {
-        return name;
-    }
+    public String getName() { return name; }
 
     public void setName(String name) {
         this.name = name;
@@ -69,19 +78,19 @@ public class Course
         this.description = description;
     }
 
-    public int getTeacherId() {
-        return teacherId;
+    public Teacher getTeacher() {
+        return teacher;
     }
 
-    public void setTeacherId(int teacherId) {
-        this.teacherId = teacherId;
+    public void setTeacherId(Teacher teacher) {
+        this.teacher = teacher;
     }
 
-    public int getStudentsCount() {
+    public Integer getStudentsCount() {
         return studentsCount;
     }
 
-    public void setStudentsCount(int studentsCount) {
+    public void setStudentsCount(Integer studentsCount) {
         this.studentsCount = studentsCount;
     }
 
@@ -100,4 +109,13 @@ public class Course
     public void setPricePerHour(float pricePerHour) {
         this.pricePerHour = pricePerHour;
     }
+
+    public List<Student> getStudents() {return students;}
+
+    public void setStudents(List<Student> students) {this.students = students;}
+
+    public String toString() {
+        return getName();
+    }
+
 }
