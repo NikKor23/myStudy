@@ -11,6 +11,8 @@ public class PLID implements Serializable {
         this.courseName =course;;
     }
 
+    public PLID () {}
+
     @Column(name = "student_name")
     private String studentName;
     @Column(name = "course_name")

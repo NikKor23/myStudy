@@ -79,5 +79,7 @@ public class Student{
     public void setCourses(List<Course> courses) {
         this.courses = courses;
     }
+
+    public String toString() {return id + " " + name; }
 }
 

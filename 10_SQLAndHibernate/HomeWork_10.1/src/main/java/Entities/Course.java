@@ -115,7 +115,7 @@ public class Course
     public void setStudents(List<Student> students) {this.students = students;}
 
     public String toString() {
-        return getName();
+        return getId() + " " +getName();
     }
 
 }

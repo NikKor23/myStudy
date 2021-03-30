@@ -1,7 +1,13 @@
 import Entities.*;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -17,14 +23,27 @@ public class Main {
         SessionFactory sessionFactory = hibernateBuilder.getSessionFactory();
         Session session = sessionFactory.openSession();
 
-        Student student = session.get(Student.class, 1);
-        Course course = session.get(Course.class, 1);
-        Teacher teacher = session.get(Teacher.class, 10);
-        Purchase pl = session.get(Purchase.class, new PLID( "Абакумов Казимир", "PHP-разработчик с 0 до PRO"));
-        Subscription sub = session.get(Subscription.class, new SubID(100, 19));
+        Query studentQuery = session.createQuery("from Student where name = :name");
+        Query courseQuery = session.createQuery("from Course where name = :name");
+        Transaction transaction = session.beginTransaction();
+        List<Purchase> purchaseList = session.createQuery("From Purchase", Purchase.class).list();
+        purchaseList.forEach(p -> {
 
-        System.out.println(pl.getSubscriptionDate() + " - " + pl.getPrice() );
+            studentQuery.setParameter("name", p.getId().getStudentName());
+            courseQuery.setParameter("name", p.getId().getCourseName());
 
+            Student student = (Student) studentQuery.getSingleResult();
+            int studentId = student.getId();
+
+            Course course = (Course) courseQuery.getSingleResult();
+            int courseId = course.getId();
+
+            LinkedPurchase lp = new LinkedPurchase(new LinkedPurchaseID(studentId, courseId));
+            System.out.println(lp);
+            session.save(lp);
+        });
+
+        transaction.commit();
         sessionFactory.close();
     }
 }
