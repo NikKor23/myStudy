@@ -31,7 +31,7 @@ public class ImageResizer implements Runnable{
                     if (image == null) {
                         continue;
                     }
-                    BufferedImage result = AsyncScalr.resize(image, newWidth).get();
+                    BufferedImage result = Scalr.resize(image, newWidth);
                     File outputFile = new File(dstFolder + "/" + file.getName());
                     ImageIO.write(result, "jpg", outputFile);
                     result.flush();
