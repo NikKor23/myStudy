@@ -18,6 +18,14 @@ public class Account {
         this.block = block;
     }
 
+    public void putMoney(long money) {
+        this.money += money;
+    }
+
+    public void withDrawMoney(long money) {
+        this.money -= money;
+    }
+
     public long getMoney() {
         return money;
     }
