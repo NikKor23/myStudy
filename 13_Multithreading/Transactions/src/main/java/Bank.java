@@ -3,7 +3,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class Bank {
 
-    private ConcurrentHashMap<String, Account> accounts = new ConcurrentHashMap<>();
+    private static final Object tieLock = new Object();
+    public ConcurrentHashMap<String, Account> accounts = new ConcurrentHashMap<>();
     private final Random random = new Random();
     public boolean isFraud(String fromAccountNum, String toAccountNum, long amount)
     {
@@ -22,37 +23,48 @@ public class Bank {
      * метод isFraud. Если возвращается true, то делается блокировка счетов (как – на ваше
      * усмотрение)
      */
-    public void transfer(String fromAccountNum, String toAccountNum, long amount) {
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+    public void transfer(String fromAcct, String toAcct, long amount) {
+        if (isBlocked(fromAcct, toAcct)) {
+            System.out.println("Accounts (" +fromAcct + " " + toAcct +  ") are blocked");
+            return;
         }
-        synchronized (this) {
-            if (isBlocked(fromAccountNum, toAccountNum)) {
-                System.out.println("Accounts (" +fromAccountNum + " " + toAccountNum +  ") are blocked");
-                return;
+        if (accounts.get(fromAcct).getMoney() < amount) {
+            System.out.println("Not enough money for transfer...");
+            return;
+        }
+
+        int fromHash = System.identityHashCode(fromAcct);
+        int toHash = System.identityHashCode(toAcct);
+        if (fromHash < toHash) {
+            synchronized (fromAcct) {
+                synchronized (toAcct) {
+                    doTransfer(fromAcct, toAcct, amount);
+                }
             }
-            if (accounts.get(fromAccountNum).getMoney() < amount) {
-                try {
-                    wait();
-                } catch (InterruptedException ex) {
-                    ex.printStackTrace();
+        } else if (fromHash > toHash) {
+            synchronized (toAcct) {
+                synchronized (fromAcct) {
+                    doTransfer(fromAcct, toAcct, amount);
                 }
-            } else {
-                doTransfer(fromAccountNum, toAccountNum, amount);
-                if (amount > 50000 && isFraud(fromAccountNum, toAccountNum, amount)) {
-                    System.out.println("Checking...");
-                    accounts.get(fromAccountNum).setBlock(true);
-                    accounts.get(toAccountNum).setBlock(true);
+            }
+        } else {
+            synchronized (tieLock) {
+                synchronized (fromAcct) {
+                    synchronized (toAcct) {
+                        doTransfer(fromAcct, toAcct, amount);
+                    }
                 }
-                notify();
             }
         }
 
+//        if (amount > 50000 && isFraud(fromAcct, toAcct, amount)) {
+//            System.out.println("Checking...");
+//            accounts.get(fromAcct).setBlock(true);
+//            accounts.get(toAcct).setBlock(true);
+//        }
     }
 
-    private void doTransfer (String fromAccNum, String toAccNum, long amount) {
+    public void doTransfer (String fromAccNum, String toAccNum, long amount) {
         accounts.get(fromAccNum).withDrawMoney(amount);
         accounts.get(toAccNum).putMoney(amount);
         System.out.println("Transfer: " + amount +

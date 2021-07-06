@@ -14,7 +14,7 @@ public class Main
         bank.addAcc("04", fourth);
         System.out.println(bank.getSumAllAccounts());
 
-        for (int i = 1; i < 1000; i++) try {
+        for (int i = 1; i < 120000; i++) try {
             new Thread(() -> bank.transfer("01", "02", Math.round(60000* Math.random()))).start();
             new Thread(() -> bank.transfer("02", "01",  Math.round(60000* Math.random()))).start();
             new Thread(() -> bank.transfer("03", "04", Math.round(60000* Math.random()))).start();
@@ -23,7 +23,7 @@ public class Main
             ex.printStackTrace();
         }
         try {
-            Thread.currentThread().sleep(5000);
+            Thread.currentThread().sleep(60000);
             System.out.println(bank.getSumAllAccounts());
         } catch (Exception ex) {
             ex.printStackTrace();
