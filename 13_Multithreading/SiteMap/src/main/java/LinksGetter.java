@@ -58,7 +58,7 @@ public class LinksGetter extends RecursiveTask<LinkedHashSet<String>> {
         if (siteDoc != null) {
             siteDoc.select("a").forEach(a -> {
                 String link = a.absUrl("href");
-                if (link.startsWith(path) && link.compareTo(path) != 0 && !link.equals(this.path) && !link.contains("#"))
+                if (link.matches(path + ".+") && !link.contains("#"))
                     set.add(link);
             });
         }
